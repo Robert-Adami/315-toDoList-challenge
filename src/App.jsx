@@ -1,16 +1,25 @@
 import { useState } from "react";
+import ToDoItem from "./toDoList";
 
 function App() {
   const [userInput, setUserInput] = useState("");
-  const [toDoList, setToDoList] = useState([]);
+  const [toDoList, setToDoListItem] = useState([]);
 
   function handleInputChange(e) {
     setUserInput(e.target.value);
   }
 
   function handleToDoList() {
-    setToDoList((prev) => [...prev, userInput]);
+    setToDoListItem((prev) => [...prev, userInput]);
     setUserInput("");
+  }
+
+  function deleteItem(id) {
+    setToDoListItem((prevItems) => {
+      return prevItems.filter((item, index) => {
+        return index !== id;
+      });
+    });
   }
 
   return (
@@ -27,7 +36,12 @@ function App() {
       <div>
         <ul>
           {toDoList.map((elem, index) => (
-            <li key={index}>{elem}</li>
+            <ToDoItem
+              key={index}
+              element={elem}
+              id={index}
+              onChecked={deleteItem}
+            />
           ))}
         </ul>
       </div>
